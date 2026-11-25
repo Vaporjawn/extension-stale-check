@@ -1,0 +1,13 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extName__",
+  "default_locale": "en",
+  "version": "1.0.0",
+  "description": "A tiny extension used by extension-stale-check's own tests.",
+  "permissions": ["storage"],
+  "host_permissions": ["http://127.0.0.1/*"],
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [
+    { "matches": ["http://127.0.0.1/*"], "js": ["content.js"], "run_at": "document_idle" }
+  ]
+}
