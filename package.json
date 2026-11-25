@@ -1,0 +1,107 @@
+{
+  "name": "extension-stale-check",
+  "version": "0.1.0",
+  "description": "Detect a stale Chrome extension: compare the manifest the browser actually loaded against dist/ on disk, in a Playwright run or in your real Chrome profile.",
+  "keywords": [
+    "chrome-extension",
+    "browser-extension",
+    "manifest-v3",
+    "playwright",
+    "playwright-fixture",
+    "testing",
+    "stale",
+    "reload",
+    "e2e",
+    "cli"
+  ],
+  "homepage": "https://github.com/Vaporjawn/extension-stale-check#readme",
+  "bugs": {
+    "url": "https://github.com/Vaporjawn/extension-stale-check/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vaporjawn/extension-stale-check.git"
+  },
+  "license": "MIT",
+  "author": "Victor Williams <victor.williams.dev@gmail.com>",
+  "type": "module",
+  "sideEffects": false,
+  "bin": {
+    "extension-stale-check": "./dist/cli/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./playwright": {
+      "types": "./dist/playwright/index.d.ts",
+      "default": "./dist/playwright/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "playwright": [
+        "dist/playwright/index.d.ts"
+      ]
+    }
+  },
+  "files": [
+    "dist",
+    "docs",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm test && npm run build && npm run verify:package",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "prebuild": "npm run clean",
+    "prepublishOnly": "npm run check",
+    "test": "npm run test:unit && npm run test:integration && npm run test:playwright",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:playwright": "playwright test",
+    "test:unit": "vitest run --config vitest.config.ts",
+    "typecheck": "tsc --noEmit",
+    "verify:package": "publint --strict && attw --pack . --profile esm-only && node scripts/smoke.mjs"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.7",
+    "eslint": "^10.15.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-one-function-per-file": "github:Vaporjawn/eslint-plugin-one-function-per-file",
+    "globals": "^17.14.0",
+    "playwright-core": "^1.65.1",
+    "prettier": "^3.10.1",
+    "publint": "^0.3.25",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.74.0",
+    "vitest": "^5.1.1"
+  },
+  "peerDependencies": {
+    "@playwright/test": ">=1.40.0",
+    "playwright-core": ">=1.40.0"
+  },
+  "peerDependenciesMeta": {
+    "@playwright/test": {
+      "optional": true
+    },
+    "playwright-core": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
